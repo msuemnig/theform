@@ -18,7 +18,9 @@ class TheForm extends Component
     
     //page 2
     public $married;
-    public $dateOfMarriage;
+    public int $yearOfMarriage;
+    public int $monthOfMarriage;
+    public int $dayOfMarriage;
     public $countryOfMarriage;
     public $widowed;
     public $marriedInPast;
@@ -53,15 +55,27 @@ class TheForm extends Component
     }
     public function updatedYearOfBirth() {
         $this->monthOfBirth = 1;
-        $this->getDaysInCurrentMonth();
+        $this->getDaysInCurrentMonthBirth();
     }
     public function updatedMonthOfBirth() {
         $this->dayOfBirth = 1;
-        $this->getDaysInCurrentMonth();
+        $this->getDaysInCurrentMonthBirth();
     }
-    public function getDaysInCurrentMonth() {
+    
+    public function updatedYearOfMarraige() {
+        $this->monthOfMarriage = 1;
+        $this->getDaysInCurrentMonthMarriage();
+    }
+    public function updatedMonthOfMarriage() {
+        $this->dayOfMarriage = 1;
+        $this->getDaysInCurrentMonthMarriage();
+    }
+    public function getDaysInCurrentMonthBirth() {
         //thanks copilot
         $this->days = range(1,cal_days_in_month(CAL_GREGORIAN, $this->monthOfBirth, $this->yearOfBirth));
+    }
+    public function getDaysInCurrentMonthMarriage() {
+        $this->days = range(1,cal_days_in_month(CAL_GREGORIAN, $this->monthOfMarriage, $this->yearOfMarriage));
     }
 
     public function showPage1() {

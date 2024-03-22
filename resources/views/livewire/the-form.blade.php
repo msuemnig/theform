@@ -57,7 +57,7 @@
             </div>
             <div class="grid grid-cols-1 gap-4 mt-4">
                 <div>
-                    <label for="yearOfBirth" class="block text-sm font-medium leading-6 text-gray-900">Year of Birth</label>
+                    <label for="yearOfBirth" class="block text-sm font-medium leading-6 text-gray-900">Year, Month and Day of Birth</label>
                     <div class="mt-2">
                         <div class="flex rounded-md shadow-sm sm:max-w-md">
                             <select name="yearOfBirth" id="yearOfBirth" wire:model.change="yearOfBirth" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
@@ -65,36 +65,23 @@
                                     <option value="{{ $year }}">{{ $year }}</option>
                                 @endforeach
                             </select>
-                            
-                           
+                            @if(is_int($yearOfBirth))
+                                <select name="monthOfBirth" id="monthOfBirth" wire:model.change="monthOfBirth" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
+                                    @foreach($months as $month)
+                                        <option value="{{ $month }}">{{ $month }}</option>
+                                    @endforeach
+                                </select> 
+                            @endif
+                            @if(is_int($monthOfBirth))
+                                <select name="dayOfBirth" id="dayOfBirth" wire:model="dayOfBirth" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
+                                    @foreach($days as $day)
+                                        <option value="{{ $day }}">{{ $day }}</option>
+                                    @endforeach
+                                </select>
+                            @endif           
                         </div>
                     </div>
                 </div>
-                
-                @if(is_int($yearOfBirth))
-                <div>
-                    <label for="yearOfBirth" class="block text-sm font-medium leading-6 text-gray-900">Month of Birth</label>
-                    <div class="mt-2">
-                            <select name="monthOfBirth" id="monthOfBirth" wire:model.change="monthOfBirth" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
-                                @foreach($months as $month)
-                                    <option value="{{ $month }}">{{ $month }}</option>
-                                @endforeach
-                            </select> 
-                    </div>
-                </div>
-                @endif
-                @if(is_int($monthOfBirth))
-                <div>
-                    <label for="yearOfBirth" class="block text-sm font-medium leading-6 text-gray-900">Day of Birth</label>
-                    <div class="mt-2">
-                        <select name="dayOfBirth" id="dayOfBirth" wire:model="dayOfBirth" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
-                            @foreach($days as $day)
-                                <option value="{{ $day }}">{{ $day }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                @endif
             </div>
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <button wire:click="showPage2" type="button" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Next</button>
@@ -118,10 +105,28 @@
             @if($married == 'Yes')
                 <div class="grid grid-cols-3 gap-4 mt-4">
                     <div>
-                        <label for="dateOfMarriage" class="block text-sm font-medium leading-6 text-gray-900">Date of Marriage</label>
+                        <label class="block text-sm font-medium leading-6 text-gray-900">Year, Month and Day of Marriage</label>
                         <div class="mt-2">
                             <div class="flex rounded-md shadow-sm sm:max-w-md">
-                                <input type="date" name="dateOfMarriage" id="dateOfMarriage" wire:model="dateOfMarriage" autocomplete="Date of Marriage" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" />
+                                <select name="yearOfMarriage" id="yearOfMarriage" wire:model.change="yearOfMarriage" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
+                                    @foreach($years as $year)
+                                        <option value="{{ $year }}">{{ $year }}</option>
+                                    @endforeach
+                                </select>
+                                @if(is_int($yearOfMarriage))
+                                    <select name="monthOfMarriage" id="monthOfMarriage" wire:model.change="monthOfMarriage" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
+                                        @foreach($months as $month)
+                                            <option value="{{ $month }}">{{ $month }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                                @if(is_int($monthOfMarriage))
+                                    <select name="dayOfMarriage" id="dayOfMarriage" wire:model="dayOfMarriage" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
+                                        @foreach($days as $day)
+                                            <option value="{{ $day }}">{{ $day }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -205,7 +210,9 @@
                 </li>
                 @if($married == 'Yes')
                     <li>
-                        <span class="font-bold">Date of Marriage:</span><br/>{{ $dateOfMarriage }}</li>
+                        <span class="font-bold">Date of Marriage:</span><br/>
+                        {{ $monthOfMarriage }}/{{ $dayOfMarriage }}/{{ $yearOfMarriage }} (mm/dd/yyyy)
+                    </li>
                     <li>
                         <span class="font-bold">Country of Marriage:</span><br/>
                         {{ $countryOfMarriage }}
