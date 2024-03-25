@@ -3,6 +3,15 @@
     <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12 space-y-8">
             <h1 class="text-base font-semibold text-gray-900 py-8">The Form</h1>
+            
+            <div>
+                <!-- output error bag -->
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @if($formStep == 1)
             <!--show form step one -->
                 <div class="grid grid-cols-2 gap-4">
@@ -72,7 +81,7 @@
                                         @endforeach
                                     </select> 
                                 @endif
-                                @if(is_int($monthOfBirth))
+                                @if(is_int($monthOfBirth) && count($days) > 0)
                                     <select name="dayOfBirth" id="dayOfBirth" wire:model="dayOfBirth" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
                                         @foreach($days as $day)
                                             <option value="{{ $day }}">{{ $day }}</option>
@@ -108,6 +117,7 @@
                             <label class="block text-sm font-medium leading-6 text-gray-900">Year, Month and Day of Marriage</label>
                             <div class="mt-2">
                                 <div class="flex rounded-md shadow-sm sm:max-w-md">
+                                    
                                     <select name="yearOfMarriage" id="yearOfMarriage" wire:model.change="yearOfMarriage" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
                                         @foreach($years as $year)
                                             <option value="{{ $year }}">{{ $year }}</option>

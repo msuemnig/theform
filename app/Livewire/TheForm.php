@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Carbon\Carbon;
 
 class TheForm extends Component
 {
+
     //page 1
     public $firstName;
     public $lastName;
@@ -38,6 +40,10 @@ class TheForm extends Component
         $this->getCountries();
         $this->getYears();
         $this->getMonths();
+        $this->days = [];
+        $this->dayOfBirth = 1;
+        $this->dayOfMarriage = 1;
+        $this->errors = [];
     }
     //get list of countries
     public function getCountries() {
@@ -80,19 +86,66 @@ class TheForm extends Component
         $this->days = range(1,cal_days_in_month(CAL_GREGORIAN, $this->monthOfMarriage, $this->yearOfMarriage));
     }
 
+    public function validateMarriageDate() {
+        $date = Carbon::createFromDate($this->yearOfBirth+18, $this->monthOfBirth, $this->dayOfBirth);
+        $marriageDate = Carbon::createFromDate($this->yearOfMarriage, $this->monthOfMarriage, $this->dayOfMarriage);
+
+        if($marriageDate->lessThan($date)) {
+            //dump('You are not eligible to apply because your marriage occurred before your 18th birthday.');
+            $this->addError('alabamaRule', 'You are not eligible to apply because your marriage occurred before your 18th birthday.');
+            return false;
+        } else {
+           return true;
+        }
+    }
+
     public function showPage1() {
         $this->formStep = 1;
     }
     public function showPage2() {
+        //validate page 1 variables are set that are required
+        $validated = $this->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'country' => 'required',
+            'yearOfBirth' => 'required',
+            'monthOfBirth' => 'required',
+            'dayOfBirth' => 'required',
+        ]);
         $this->formStep = 2;
     }
     public function showPageConfirm() {
-
-        //probably want to
-            //create a form request
-            //validate the data
-            //save to model
-        $this->formStep = 3;
+        
+        //if married is yes, check those vars
+        if($this->married == 'Yes') {
+            $validated = $this->validate([
+                'married' => 'required',
+                'yearOfMarriage' => 'required',
+                'monthOfMarriage' => 'required',
+                'dayOfMarriage' => 'required',
+                'countryOfMarriage' => 'required',
+            ]);
+        } else {
+            //marriage is no, check those
+            $validated = $this->validate([
+                'married' => 'required',
+                'widowed' => 'required',
+                'marriedInPast' => 'required',
+            ]);
+        }
+        
+        //alabamaRule
+        if($this->validateMarriageDate()) {
+            $this->formStep = 3;
+            //probably want to
+                //create a form request
+                //save to model
+        }else {
+            //do nothing
+        }
+        
     }
     public function render()
     {
