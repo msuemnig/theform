@@ -47,6 +47,8 @@ class TheForm extends Component
             "Mexico",
         ];
     }
+
+    
     public function getYears() {
         $this->years = range(1900, date('Y'));
     }
@@ -85,6 +87,11 @@ class TheForm extends Component
         $this->formStep = 2;
     }
     public function showPageConfirm() {
+
+        //probably want to
+            //create a form request
+            //validate the data
+            //save to model
         $this->formStep = 3;
     }
     public function render()
