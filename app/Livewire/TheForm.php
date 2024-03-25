@@ -127,6 +127,14 @@ class TheForm extends Component
                 'dayOfMarriage' => 'required',
                 'countryOfMarriage' => 'required',
             ]);
+            
+            //alabamaRule
+            if($this->validateMarriageDate()) {
+                $this->formStep = 3;
+                //probably want to
+                    //create a form request
+                    //save to model
+            }
         } else {
             //marriage is no, check those
             $validated = $this->validate([
@@ -134,17 +142,10 @@ class TheForm extends Component
                 'widowed' => 'required',
                 'marriedInPast' => 'required',
             ]);
+            $this->formStep = 3;
         }
         
-        //alabamaRule
-        if($this->validateMarriageDate()) {
-            $this->formStep = 3;
-            //probably want to
-                //create a form request
-                //save to model
-        }else {
-            //do nothing
-        }
+        //if nothing matches above, do nothing
         
     }
     public function render()
